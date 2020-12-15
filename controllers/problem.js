@@ -4,6 +4,7 @@ const Comment = require('../models/comment/Comment')
 const Problem = require('../models/problem/Problem')
 const Solution = require('../models/solution/Solution')
 const User = require('../models/user/User')
+const Tag = require('../models/tag/Tag')
 
 const getAllProblems = asyncErrorWrapper(async (req, res, next) => {
 
@@ -58,14 +59,19 @@ const addNewProblem = asyncErrorWrapper(async (req, res, next) => {
 
     const information = req.body
 
+    console.log(information)
+
     const newProblem = await Problem.create({
         ...information,
-        user: req.user.id
+        user: req.user.id,
+        tag: information.tags
     })
 
     const userOfProblem = await User.findByIdAndUpdate(req.user.id, {
         $push: { problem: newProblem._id }
     })
+
+    console.log(tags)
 
     res
     .status(200)

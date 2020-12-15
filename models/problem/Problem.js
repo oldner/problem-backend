@@ -44,10 +44,12 @@ const problemSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    tag: {
-        type: String,
-        required: ['You have to select a tag', true]
-    }
+    tag: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'Tag'
+        }
+    ]
 })
 
 problemSchema.pre('save', function(next) {
