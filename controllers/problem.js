@@ -21,15 +21,15 @@ const getAllProblems = asyncErrorWrapper(async (req, res, next) => {
             data: post
         })
     });
-    
+
 })
 
 const getAProblem = asyncErrorWrapper(async (req, res, next) => {
 
     const {id} = req.params
-    
+
     const problems = null
-    
+
     await Problem.findByIdAndUpdate(id, {
         $inc: { views: 1 }
     }, { new: true })
@@ -44,7 +44,7 @@ const getAProblem = asyncErrorWrapper(async (req, res, next) => {
         if(err) {
             console.log(err)
         }
-        
+        console.log(post.tag)
         res
         .status(200)
         .json({
@@ -59,7 +59,21 @@ const addNewProblem = asyncErrorWrapper(async (req, res, next) => {
 
     const information = req.body
 
-    console.log(information)
+    const tags = [
+
+    ]
+
+    for (let i = 0; i <= information.tag.length; i++){
+        tags.push({
+            name: information.tag[i]
+        })
+    }
+
+    console.log(tags)
+
+    // const newTags = await Tag.insertMany(tags, function (err, docs) {
+
+    // })
 
     const newProblem = await Problem.create({
         ...information,
@@ -70,8 +84,6 @@ const addNewProblem = asyncErrorWrapper(async (req, res, next) => {
     const userOfProblem = await User.findByIdAndUpdate(req.user.id, {
         $push: { problem: newProblem._id }
     })
-
-    console.log(tags)
 
     res
     .status(200)

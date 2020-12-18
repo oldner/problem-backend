@@ -17,12 +17,20 @@ const getTags = asyncErrorWrapper(async (req, res, next) => {
 
 const addNewTag = asyncErrorWrapper(async (req, res, next) => {
 
+    console.log(req.body)
+
     const { tag } = req.body
 
-    // const tag = await Tag.create({
-    //     name: tag,
-    //     $push: { problem: newProblem._id }
-    // })
+    const newTag = await Tag.create({
+        name: tag,
+    })
+
+    res
+        .status(200)
+        .json({
+            success: true,
+            data: newTag
+    })
 })
 
 
