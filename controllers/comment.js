@@ -7,7 +7,7 @@ const asyncErrorWrapper = require('express-async-handler')
 
 const addCommentToProblem = asyncErrorWrapper(async (req, res, next) => {
 
-    const {content, problemId} = req.body
+    const { content, problemId } = req.body
     
     const newComment = await Comment.create({
         content: content,
@@ -23,22 +23,29 @@ const addCommentToProblem = asyncErrorWrapper(async (req, res, next) => {
         $push: { comment: newComment._id }
     })
 
+    res
+        .status(200)
+        .json({
+            success: true,
+            data: newComment
+    })
+
 })
 
 const addCommentToSolution = asyncErrorWrapper(async (req, res, next) => {
-    const {content, solutionId} = req.body
+    const {content, solution} = req.body
     
     const newComment = await Comment.create({
         content: content,
-        solution: solutionId,
+        solution: solution,
         user: req.user.id,
     })
 
-    const solutionOfComment = await Solution.findByIdAndUpdate(solutionId, {
+    await Solution.findByIdAndUpdate(solution, {
         $push: { comment: newComment._id }
     })
 
-    const userOfComment = await User.findByIdAndUpdate(req.user.id, {
+    await User.findByIdAndUpdate(req.user.id, {
         $push: { comment: newComment._id }
     })
 

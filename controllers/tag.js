@@ -3,21 +3,19 @@ const Tag = require('../models/tag/Tag')
 const CustomError = require('../helpers/error/CustomError')
 
 const getTags = asyncErrorWrapper(async (req, res, next) => {
-
     const tags = Tag.find()
-
-    res
+        .exec(function (err, post) {
+            res
         .status(200)
         .json({
             success: true,
-            data: tags
+            data: post
+    })
     })
 
 })
 
 const addNewTag = asyncErrorWrapper(async (req, res, next) => {
-
-    console.log(req.body)
 
     const { tag } = req.body
 

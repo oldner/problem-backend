@@ -44,7 +44,7 @@ const problemSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    tag: [
+    tags: [
         {
             type: mongoose.Types.ObjectId,
             ref: 'Tag'

@@ -48,7 +48,6 @@ const getSolutions = asyncErrorWrapper(async (req, res, next) => {
         if(err) {
             console.log(err)
         }
-        console.log(post)
         res
         .status(200)
         .json({
@@ -59,4 +58,51 @@ const getSolutions = asyncErrorWrapper(async (req, res, next) => {
     
 })
 
-module.exports = { addNewSolution, getSolutions }
+const voteSolution = asyncErrorWrapper(async (req, res, next) => {
+
+    const { solutionId, isUpped } = req.body
+
+    
+
+    if (await User.exists({ votedProblems: solutionId })) {
+        res
+            .status(400)
+            .json({
+                success: false,
+                message: 'aynisolutionbirdenfazla'
+            })
+    } else {
+        await User.findByIdAndUpdate(req.user.id, {
+            $push: {
+                votedProblems: solutionId
+            }
+        })
+
+        await Solution.findByIdAndUpdate(solutionId,
+            {
+                $inc: { votes: isUpped ? 1 : -1 }
+            },
+            { new: true })
+            .populate('user')
+            .populate({
+                'path': 'comment',
+                'populate': {
+                    'path': 'user'
+                }
+            })
+            .populate('tags')
+            .exec(function (err, post) {
+                if (err) {
+                    console.log(err)
+                }
+                res
+                    .status(200)
+                    .json({
+                        success: true,
+                        data: post
+                    })
+            })
+    }
+})
+
+module.exports = { addNewSolution, getSolutions, voteSolution }
