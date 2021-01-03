@@ -96,8 +96,6 @@ const voteProblem = asyncErrorWrapper(async (req, res, next) => {
 
     const { problemId, isUpped } = req.body
 
-    
-
     if (await User.exists({ votedProblems: problemId })) {
         res
             .status(400)
@@ -139,4 +137,52 @@ const voteProblem = asyncErrorWrapper(async (req, res, next) => {
     }
 })
 
-module.exports = {addNewProblem, getAllProblems, getAProblem, voteProblem}
+const editProblem = asyncErrorWrapper(async (req, res, next) => {
+
+    const { problemId, title, content, tags } = req.body
+    
+    const tagsId = await Tag.find({ name: tags }, '_id').exec()
+    const idOfTags = tagsId.map((item) => item._id)
+
+    const oldProblem = await Problem.findById(problemId)
+        .select('tags')
+        .exec()
+    
+    const oldProblemTags = oldProblem.tags
+
+    const problem = await Problem.findByIdAndUpdate(problemId, {
+        title: title,
+        content: content,
+        $pullAll: {
+            tags: oldProblemTags
+        },
+    })
+
+    await Tag.updateMany({ _id: oldProblemTags }, {
+        $pull: {
+            problems: problemId
+        }
+    })
+
+    await Problem.findByIdAndUpdate(problemId, {
+        $push: {
+            tags: {
+                $each: idOfTags }
+        },
+    })
+
+    await Tag.updateMany({ _id: idOfTags }, {
+        $push: { problems: problemId }
+    })
+
+    
+
+    res
+        .status(200)
+        .json({
+            success: true,
+            data: problem
+        })
+})
+
+module.exports = {addNewProblem, getAllProblems, getAProblem, voteProblem, editProblem}

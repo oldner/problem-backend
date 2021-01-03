@@ -60,9 +60,7 @@ const getSolutions = asyncErrorWrapper(async (req, res, next) => {
 
 const voteSolution = asyncErrorWrapper(async (req, res, next) => {
 
-    const { solutionId, isUpped } = req.body
-
-    
+    const { solutionId, isUpped, problemId } = req.body
 
     if (await User.exists({ votedProblems: solutionId })) {
         res
@@ -82,26 +80,26 @@ const voteSolution = asyncErrorWrapper(async (req, res, next) => {
             {
                 $inc: { votes: isUpped ? 1 : -1 }
             },
-            { new: true })
-            .populate('user')
-            .populate({
-                'path': 'comment',
-                'populate': {
-                    'path': 'user'
-                }
-            })
-            .populate('tags')
-            .exec(function (err, post) {
-                if (err) {
-                    console.log(err)
-                }
-                res
-                    .status(200)
-                    .json({
-                        success: true,
-                        data: post
-                    })
-            })
+        )
+        await Solution.find({ problem: problemId })
+    .populate('user')
+    .populate({
+        'path': 'comment',
+        'populate': {
+            'path': 'user'
+        }
+    })
+    .exec(function(err, post) {
+        if(err) {
+            console.log(err)
+        }
+        res
+        .status(200)
+        .json({
+            success: true,
+            data: post
+        })
+    });
     }
 })
 
