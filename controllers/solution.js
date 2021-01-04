@@ -103,4 +103,20 @@ const voteSolution = asyncErrorWrapper(async (req, res, next) => {
     }
 })
 
-module.exports = { addNewSolution, getSolutions, voteSolution }
+const editSolution = asyncErrorWrapper(async (req, res, next) => {
+    const { solutionId, content } = req.body
+
+    const solution = await Solution.findByIdAndUpdate(solutionId, {
+        content: content,
+        new: true
+    })
+
+    res
+        .status(200)
+        .json({
+            success: true,
+            data: solution
+        })
+})
+
+module.exports = { addNewSolution, getSolutions, voteSolution, editSolution }

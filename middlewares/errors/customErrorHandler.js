@@ -3,7 +3,6 @@ const CustomError = require('../../helpers/error/CustomError');
 const customErrorHandler = (err, req, res, next) => {
 
     let customError = err;
-    console.log(err)
     if(err.name === 'SynaxError') {
         customError = new CustomError('Unexpected syntax', 400);
     }
@@ -18,7 +17,6 @@ const customErrorHandler = (err, req, res, next) => {
     }
     if(err.status === 401) {
         customError = new CustomError(err.message, err.status);
-        console.log(err.message);
     } 
 
     res
