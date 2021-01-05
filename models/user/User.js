@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
         minlength: [6, 'password6'],
         select: false
     },
+    profilepic: {
+        type: String,
+    },
     role: {
         type: String,
         default: 'user',
@@ -70,7 +73,7 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Problem'
         },
-    ]
+    ],
 })
 
 userSchema.methods.generateJwtFromUser = function() {
