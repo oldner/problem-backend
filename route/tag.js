@@ -1,7 +1,7 @@
 const express = require('express')
+const router = express.Router()
 const { getTags, addNewTag } = require('../controllers/tag')
 const {getAccessToRoute} = require('../middlewares/authentication/authentication')
-const router = express.Router()
 
 router.get('/getalltags', getTags)
 router.post('/addatag', getAccessToRoute, addNewTag)
