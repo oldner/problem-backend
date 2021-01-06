@@ -185,4 +185,23 @@ const editProblem = asyncErrorWrapper(async (req, res, next) => {
         })
 })
 
-module.exports = {addNewProblem, getAllProblems, getAProblem, voteProblem, editProblem}
+const solvedProblem = asyncErrorWrapper(async (req, res, next) => {
+    const { problemId, solutionId } = req.body
+
+    const problem = await Problem.findByIdAndUpdate(problemId, {
+        isSolved: true
+    })
+
+    const solution = await Solution.findByIdAndUpdate(solutionId, {
+        isSolved: true
+    })
+
+    res
+        .status(200)
+        .json({
+            success: true,
+            message: 'Solved!'
+    })
+})
+
+module.exports = {addNewProblem, getAllProblems, getAProblem, voteProblem, editProblem, solvedProblem}

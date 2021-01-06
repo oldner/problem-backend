@@ -49,7 +49,11 @@ const problemSchema = new mongoose.Schema({
             type: mongoose.Types.ObjectId,
             ref: 'Tag'
         }
-    ]
+    ],
+    isSolved: {
+        type: Boolean,
+        default: false
+    }
 })
 
 problemSchema.pre('save', function(next) {
