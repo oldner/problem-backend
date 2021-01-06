@@ -25,6 +25,10 @@ const commentSchema = new mongoose.Schema({
     solution: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Solution'
+    },
+    editIndex: {
+        type: Boolean,
+        default: false
     }
 })
 

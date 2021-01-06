@@ -56,4 +56,18 @@ const addCommentToSolution = asyncErrorWrapper(async (req, res, next) => {
     })
 })
 
-module.exports = {addCommentToProblem, addCommentToSolution}
+const editComment = asyncErrorWrapper(async (req, res, next) => {
+    const {content, commentId} = req.body
+    
+    const comment = await Comment.findByIdAndUpdate(commentId, {
+        content: content
+    })
+
+    res
+    .status(200)
+    .json({
+        success: true,
+    })
+})
+
+module.exports = {addCommentToProblem, addCommentToSolution, editComment}
