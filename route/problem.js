@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {addNewProblem, getAllProblems, getAProblem, voteProblem, editProblem, solvedProblem} = require('../controllers/problem')
+const {addNewProblem, getAllProblems, getAProblem, voteProblem, editProblem, solvedProblem, deleteProblem} = require('../controllers/problem')
 const {getAccessToRoute} = require('../middlewares/authentication/authentication')
 const { checkProblemExist } = require('../middlewares/database/databaseErrorHelpers')
 
@@ -10,5 +10,6 @@ router.get('/:id/', checkProblemExist, getAProblem)
 router.post('/voteproblem', getAccessToRoute, voteProblem)
 router.post('/edit', getAccessToRoute, editProblem)
 router.post('/solved', getAccessToRoute, solvedProblem)
+router.get('/delete/:id', getAccessToRoute, deleteProblem)
 
 module.exports = router

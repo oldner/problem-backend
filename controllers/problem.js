@@ -204,4 +204,21 @@ const solvedProblem = asyncErrorWrapper(async (req, res, next) => {
     })
 })
 
-module.exports = {addNewProblem, getAllProblems, getAProblem, voteProblem, editProblem, solvedProblem}
+const deleteProblem = asyncErrorWrapper(async (req, res, next) => {
+    const { id } = req.params
+
+    console.log(id)
+
+    await Problem.deleteOne({
+        _id: id
+    })
+
+    res
+        .status(200)
+        .json({
+            success: true,
+            message: 'Deleted!'
+    })
+})
+
+module.exports = {addNewProblem, getAllProblems, getAProblem, voteProblem, editProblem, solvedProblem, deleteProblem}
