@@ -70,4 +70,25 @@ const editComment = asyncErrorWrapper(async (req, res, next) => {
     })
 })
 
-module.exports = {addCommentToProblem, addCommentToSolution, editComment}
+const deleteComment = asyncErrorWrapper(async (req, res, next) => {
+    const { id } = req.params
+
+    await Comment.deleteOne({
+        _id: id
+    })
+
+    await User.findByIdAndUpdate(req.user.id, {
+        $pull: {
+            comment: id
+        }
+    })
+
+    res
+        .status(200)
+        .json({
+            success: true,
+            message: 'Deleted!'
+    })
+})
+
+module.exports = {addCommentToProblem, addCommentToSolution, editComment, deleteComment}

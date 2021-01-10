@@ -207,8 +207,6 @@ const solvedProblem = asyncErrorWrapper(async (req, res, next) => {
 const deleteProblem = asyncErrorWrapper(async (req, res, next) => {
     const { id } = req.params
 
-    console.log(id)
-
     await Problem.deleteOne({
         _id: id
     })
