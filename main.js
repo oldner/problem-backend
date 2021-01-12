@@ -32,5 +32,5 @@ app.use(customErrorHandler)
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.listen(process.env.PORT, () => {
-    console.log('server listening on' + process.env.PORT)
+    console.log('server listening on' + process.env.PORT || 3000)
 })
