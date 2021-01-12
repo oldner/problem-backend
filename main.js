@@ -18,7 +18,7 @@ connectDatabase()
 app.use(cookieParser())
 
 app.use(cors({
-    origin: 'http://localhost:8080',
+    origin: 'https://sleepy-raman-1e1662.netlify.app/',
     allowedHeaders: ['Accept', 'Content-Type', 'Authorization', 'Set-Cookie', 'Cookie'],
     credentials: true
 }))
