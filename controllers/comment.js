@@ -71,24 +71,51 @@ const editComment = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const deleteComment = asyncErrorWrapper(async (req, res, next) => {
-    const { id } = req.params
-
-    await Comment.deleteOne({
-        _id: id
-    })
-
-    await User.findByIdAndUpdate(req.user.id, {
-        $pull: {
-            comment: id
-        }
-    })
-
-    res
+    
+    if (req.body.problemId) {
+        const { problemId, commentId } = req.body
+        await Comment.deleteOne({
+            _id: commentId
+        })
+        await User.findByIdAndUpdate(req.user.id, {
+            $pull: {
+                comment: commentId
+            }
+        })
+        await Problem.findByIdAndUpdate(problemId, {
+            $pull: {
+                comment: commentId
+            }
+        })
+        res
         .status(200)
         .json({
             success: true,
             message: 'Deleted!'
     })
+
+    } else {
+        const { solutionId, commentId } = req.body
+        await Comment.deleteOne({
+            _id: commentId
+        })
+        await User.findByIdAndUpdate(req.user.id, {
+            $pull: {
+                comment: commentId
+            }
+        })
+        await Solution.findByIdAndUpdate(solutionId, {
+            $pull: {
+                comment: commentId
+            }
+        })
+        res
+        .status(200)
+        .json({
+            success: true,
+            message: 'Deleted!'
+    })
+    }
 })
 
 module.exports = {addCommentToProblem, addCommentToSolution, editComment, deleteComment}

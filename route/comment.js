@@ -6,6 +6,6 @@ const router = express.Router()
 router.post('/addcommenttoproblem', getAccessToRoute, addCommentToProblem )
 router.post('/addcommenttosolution', getAccessToRoute, addCommentToSolution )
 router.post('/editcomment', getAccessToRoute, editComment )
-router.get('/delete/:id', getAccessToRoute, deleteComment )
+router.post('/delete/', getAccessToRoute, deleteComment )
 
 module.exports = router
