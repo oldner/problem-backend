@@ -5,7 +5,6 @@ const Problem = require('../models/problem/Problem')
 const Solution = require('../models/solution/Solution')
 const User = require('../models/user/User')
 const Tag = require('../models/tag/Tag')
-const { exists } = require('../models/comment/Comment')
 
 const getAllProblems = asyncErrorWrapper(async (req, res, next) => {
 
