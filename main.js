@@ -18,7 +18,7 @@ connectDatabase()
 app.use(cookieParser())
 
 app.use(cors({
-    origin: 'http://localhost:3000/',
+    origin: `${process.env.FRONTEND_URL}`,
     allowedHeaders: ['Accept', 'Content-Type', 'Authorization', 'Set-Cookie', 'Cookie'],
     credentials: true
 }))
